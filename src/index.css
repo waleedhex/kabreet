@@ -1,0 +1,188 @@
+@import url('./mobile-fixes.css');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Matchstick Game Color System */
+    --background: 25 20% 8%;
+    --foreground: 45 95% 85%;
+
+    --card: 25 15% 12%;
+    --card-foreground: 45 95% 85%;
+
+    --popover: 25 15% 12%;
+    --popover-foreground: 45 95% 85%;
+
+    --primary: 45 100% 65%;
+    --primary-foreground: 25 20% 8%;
+
+    --secondary: 25 30% 20%;
+    --secondary-foreground: 45 95% 85%;
+
+    --muted: 25 25% 15%;
+    --muted-foreground: 45 20% 55%;
+
+    --accent: 15 85% 55%;
+    --accent-foreground: 45 95% 85%;
+
+    --destructive: 0 85% 60%;
+    --destructive-foreground: 45 95% 85%;
+
+    --border: 25 30% 25%;
+    --input: 25 30% 18%;
+    --ring: 45 100% 65%;
+
+    --radius: 0.75rem;
+
+    /* Game-specific colors */
+    --matchstick-wood: 30 65% 45%;
+    --matchstick-tip: 15 85% 55%;
+    --game-surface: 25 15% 10%;
+    --success: 120 60% 50%;
+    --warning: 45 100% 60%;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+    --gradient-surface: linear-gradient(145deg, hsl(var(--card)), hsl(var(--game-surface)));
+    --gradient-matchstick: linear-gradient(90deg, hsl(var(--matchstick-wood)), hsl(var(--matchstick-tip)));
+
+    /* Shadows and Effects */
+    --shadow-game: 0 25px 50px -12px hsl(var(--primary) / 0.25);
+    --shadow-card: 0 10px 30px -5px hsl(25 50% 5% / 0.8);
+    --glow-matchstick: 0 0 20px hsl(var(--matchstick-tip) / 0.5);
+
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    /* Enhanced dark mode for matchstick game */
+    --background: 25 25% 6%;
+    --foreground: 45 95% 90%;
+    --card: 25 20% 10%;
+    --game-surface: 25 20% 8%;
+    --shadow-card: 0 15px 40px -8px hsl(25 50% 3% / 0.9);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Cairo', 'Segoe UI', system-ui, sans-serif;
+    direction: rtl;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Amiri', 'Cairo', serif;
+    font-weight: 700;
+  }
+
+  .logo-gradient {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .game-card {
+    @apply bg-card border-border/30 shadow-[var(--shadow-card)];
+  }
+
+  .game-card:hover {
+    @apply shadow-[var(--shadow-game)] transform scale-[1.02];
+    transition: var(--transition-smooth);
+  }
+
+  .matchstick-glow {
+    filter: drop-shadow(var(--glow-matchstick));
+  }
+
+  /* Smooth animations for matchsticks */
+  .animate-matchstick-move {
+    animation: none; /* Remove animation, rely on CSS transition */
+  }
+
+  /* Better mobile animation support */
+  svg g {
+    transform-box: fill-box;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  @keyframes smooth-move {
+    0% {
+      transform-origin: center;
+    }
+    50% {
+      transform: scale(1.02);
+    }
+    100% {
+      transform-origin: center;
+    }
+  }
+
+  /* Enhanced easing curves for better mobile experience */
+  .transition-smooth-mobile {
+    transition: all 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+
+  .transition-gentle {
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+@layer components {
+  .btn-game-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90;
+    @apply shadow-[0_4px_15px_hsl(var(--primary)/0.3)];
+    @apply transition-all duration-300 ease-out;
+    @apply hover:shadow-[0_6px_20px_hsl(var(--primary)/0.4)] hover:scale-[1.02];
+  }
+
+  .btn-game-secondary {
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary/80;
+    @apply border border-border/50;
+    @apply transition-all duration-300 ease-out;
+    @apply hover:border-primary/30 hover:shadow-[0_4px_12px_hsl(var(--primary)/0.2)];
+  }
+
+  .card-game {
+    @apply bg-card/80 backdrop-blur-sm border border-border/30;
+    @apply shadow-[var(--shadow-card)] rounded-[var(--radius)];
+    @apply transition-all duration-300 ease-out;
+  }
+
+  .card-game:hover {
+    @apply shadow-[var(--shadow-game)] border-primary/20;
+    transform: translateY(-2px);
+  }
+}

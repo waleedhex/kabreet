@@ -1,0 +1,61 @@
+{
+  "name": "لعبة ألغاز الكباريت",
+  "short_name": "ألغاز الكباريت",
+  "description": "اختبر ذكاءك وحل الألغاز بتحريك أعواد الكباريت",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f0f23",
+  "theme_color": "#0f0f23",
+  "orientation": "portrait",
+  "scope": "/",
+  "lang": "ar",
+  "dir": "rtl",
+  "categories": ["games", "puzzle", "education"],
+  "icons": [
+    {
+      "src": "/pwa-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/pwa-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/screenshot-narrow.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "بدء لعبة جديدة",
+      "short_name": "لعبة جديدة",
+      "description": "ابدأ لعبة جديدة مباشرة",
+      "url": "/",
+      "icons": [
+        {
+          "src": "/pwa-icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}
