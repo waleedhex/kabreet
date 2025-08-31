@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { KeyRound, Lock, AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { usePWA, pwaCache } from '@/hooks/use-pwa';
 
 interface LoginProps {
   onLogin: () => void;
@@ -15,6 +16,21 @@ const Login = ({ onLogin }: LoginProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const { toast } = useToast();
+  const { isPWA } = usePWA();
+
+  // أوتوفيل رمز الدخول في وضع PWA
+  useEffect(() => {
+    if (isPWA && pwaCache.hasAccessCode()) {
+      const cachedCode = pwaCache.getAccessCode();
+      if (cachedCode) {
+        setAccessCode(cachedCode);
+        // محاولة تسجيل دخول تلقائي
+        setTimeout(() => {
+          handleSubmit({ preventDefault: () => {} } as React.FormEvent);
+        }, 500);
+      }
+    }
+  }, [isPWA]);
 
   const validateAccessCode = async (code: string): Promise<boolean> => {
     try {
@@ -47,6 +63,11 @@ const Login = ({ onLogin }: LoginProps) => {
       const isValid = await validateAccessCode(accessCode.trim());
       
       if (isValid) {
+        // حفظ رمز الدخول في الكاش في وضع PWA
+        if (isPWA) {
+          pwaCache.saveAccessCode(accessCode.trim());
+        }
+        
         toast({
           title: "تم تسجيل الدخول بنجاح! 🎉",
           description: "مرحباً بك في لعبة الأعواد الذكية",

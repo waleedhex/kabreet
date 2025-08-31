@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { GameStick } from '@/types/game';
 
 interface MatchstickProps {
@@ -9,6 +9,8 @@ interface MatchstickProps {
   animationEasing: string;
   showTarget?: boolean;
   reset?: boolean;
+  blinkTimes?: number;
+  blinkInterval?: number;
 }
 
 const Matchstick = ({ 
@@ -18,9 +20,12 @@ const Matchstick = ({
   animationDuration, 
   animationEasing, 
   showTarget = false,
-  reset = false
+  reset = false,
+  blinkTimes = 3,
+  blinkInterval = 180
 }: MatchstickProps) => {
   const groupRef = useRef<SVGGElement>(null);
+  const [isBlinking, setIsBlinking] = useState(false);
   
   useEffect(() => {
     const group = groupRef.current;
@@ -30,15 +35,34 @@ const Matchstick = ({
       // إعادة تعيين فورية للموضع الأصلي
       group.style.transform = `translate3d(${stick.start.x}px, ${stick.start.y}px, 0) rotate(${stick.start.r}deg) scale(${stick.start.s})`;
       group.style.transition = 'none';
+      setIsBlinking(false);
       return;
     }
     
     if (showTarget) {
-      // تطبيق الانتقال مع الحركة
-      group.style.transition = `transform ${animationDuration}ms ${animationEasing}`;
-      group.style.transform = `translate3d(${stick.target.x}px, ${stick.target.y}px, 0) rotate(${stick.target.r}deg) scale(${stick.target.s})`;
+      // بدء الوميض قبل الحركة
+      setIsBlinking(true);
+      
+      // تنفيذ الوميض
+      let blinkCount = 0;
+      const blinkInterval_ID = setInterval(() => {
+        group.style.opacity = group.style.opacity === '0.3' ? '1' : '0.3';
+        blinkCount++;
+        
+        if (blinkCount >= blinkTimes * 2) { // ضرب في 2 لأن كل وميض يحتاج تشغيل وإطفاء
+          clearInterval(blinkInterval_ID);
+          group.style.opacity = '1';
+          setIsBlinking(false);
+          
+          // بدء الحركة بعد انتهاء الوميض
+          setTimeout(() => {
+            group.style.transition = `transform ${animationDuration}ms ${animationEasing}`;
+            group.style.transform = `translate3d(${stick.target.x}px, ${stick.target.y}px, 0) rotate(${stick.target.r}deg) scale(${stick.target.s})`;
+          }, 100); // تأخير بسيط لضمان انتهاء الوميض
+        }
+      }, blinkInterval);
     }
-  }, [showTarget, reset, stick.start, stick.target, animationDuration, animationEasing]);
+  }, [showTarget, reset, stick.start, stick.target, animationDuration, animationEasing, blinkTimes, blinkInterval]);
 
   // الأبعاد الأصلية من الكود المصدر
   const stickWidth = 200;   // العرض الأصلي

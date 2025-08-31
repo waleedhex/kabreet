@@ -8,6 +8,7 @@ import { Plus, Trash2, Play, Users, Smartphone } from 'lucide-react';
 import { GameSettings, Player, GamePuzzle } from '@/types/game';
 import { PuzzleService } from '@/services/puzzleService';
 import PWAInstallPrompt from './PWAInstallPrompt';
+import { usePWA } from '@/hooks/use-pwa';
 import { toast } from 'sonner';
 
 interface GameSetupProps {
@@ -19,6 +20,7 @@ const GameSetup = ({ onStartGame }: GameSetupProps) => {
   const [timeLimit, setTimeLimit] = useState([0]); // in minutes
   const [newPlayerName, setNewPlayerName] = useState('');
   const [showPWAPrompt, setShowPWAPrompt] = useState(false);
+  const { isPWA, shouldShowInstallPrompt } = usePWA();
 
   const addPlayer = () => {
     if (newPlayerName.trim()) {
@@ -159,21 +161,23 @@ const GameSetup = ({ onStartGame }: GameSetupProps) => {
             ابدأ اللعب
           </Button>
 
-          {/* PWA Install Button */}
-          <Button
-            onClick={() => setShowPWAPrompt(true)}
-            variant="outline"
-            size="lg"
-            className="w-full text-lg font-semibold py-6 border-2 border-primary/20 hover:border-primary hover:bg-primary/5 transition-all duration-300"
-          >
-            <Smartphone className="h-6 w-6 ml-2" />
-            حفظ كتطبيق
-          </Button>
+          {/* PWA Install Button - يظهر فقط إذا لم يكن التطبيق في وضع PWA */}
+          {shouldShowInstallPrompt && (
+            <Button
+              onClick={() => setShowPWAPrompt(true)}
+              variant="outline"
+              size="lg"
+              className="w-full text-lg font-semibold py-6 border-2 border-primary/20 hover:border-primary hover:bg-primary/5 transition-all duration-300"
+            >
+              <Smartphone className="h-6 w-6 ml-2" />
+              حفظ كتطبيق
+            </Button>
+          )}
         </CardContent>
       </Card>
 
-      {/* PWA Install Prompt */}
-      {showPWAPrompt && (
+      {/* PWA Install Prompt - يظهر فقط إذا لم يكن التطبيق في وضع PWA */}
+      {showPWAPrompt && shouldShowInstallPrompt && (
         <PWAInstallPrompt onClose={() => setShowPWAPrompt(false)} />
       )}
     </div>

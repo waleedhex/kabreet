@@ -19,7 +19,7 @@ const MatchstickCanvas = ({
 }: MatchstickCanvasProps) => {
   const isAnimating = showSolution || showStep > 0;
   const isMobile = useIsMobile();
-  const effectiveDuration = Math.round(puzzle.animation.duration * (isMobile ? 1.8 : 1.2));
+  const effectiveDuration = puzzle.animation.duration * (isMobile ? 1.8 : 1.2);
   const effectiveEasing = isMobile ? 'cubic-bezier(0.25, 0.1, 0.25, 1)' : 'cubic-bezier(0.4, 0, 0.2, 1)';
 
   useEffect(() => {
@@ -101,6 +101,8 @@ const MatchstickCanvas = ({
                 animationEasing={effectiveEasing}
                 showTarget={shouldShowTarget}
                 reset={!(showSolution || showStep > 0)}
+                blinkTimes={puzzle.animation.blinkTimes}
+                blinkInterval={puzzle.animation.blinkInterval}
               />
             );
           })}
