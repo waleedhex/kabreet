@@ -33,7 +33,7 @@ const Matchstick = ({
 
     if (reset) {
       // إعادة تعيين فورية للموضع الأصلي
-      group.style.transform = `translate3d(${stick.start.x}px, ${stick.start.y}px, 0) rotate(${stick.start.r}deg) scale(${stick.start.s})`;
+      group.setAttribute('transform', `translate(${stick.start.x} ${stick.start.y}) rotate(${stick.start.r} ${stickWidth/2} 0) scale(${stick.start.s})`);
       group.style.transition = 'none';
       setIsBlinking(false);
       return;
@@ -56,8 +56,18 @@ const Matchstick = ({
           
           // بدء الحركة بعد انتهاء الوميض
           setTimeout(() => {
-            group.style.transition = `transform ${animationDuration}ms ${animationEasing}`;
-            group.style.transform = `translate3d(${stick.target.x}px, ${stick.target.y}px, 0) rotate(${stick.target.r}deg) scale(${stick.target.s})`;
+            // استخدام SVG transform animation بدلاً من CSS
+            const targetTransform = `translate(${stick.target.x} ${stick.target.y}) rotate(${stick.target.r} ${stickWidth/2} 0) scale(${stick.target.s})`;
+            
+            // إنشاء أنيميشن SVG
+            const animateTransform = document.createElementNS('http://www.w3.org/2000/svg', 'animateTransform');
+            animateTransform.setAttribute('attributeName', 'transform');
+            animateTransform.setAttribute('type', 'translate');
+            animateTransform.setAttribute('dur', `${animationDuration}ms`);
+            animateTransform.setAttribute('values', `${stick.start.x} ${stick.start.y}; ${stick.target.x} ${stick.target.y}`);
+            animateTransform.setAttribute('keyTimes', '0; 1');
+            
+            group.setAttribute('transform', targetTransform);
           }, 100); // تأخير بسيط لضمان انتهاء الوميض
         }
       }, blinkInterval);
@@ -73,13 +83,9 @@ const Matchstick = ({
   return (
     <g 
       ref={groupRef}
+      transform={`translate(${stick.start.x} ${stick.start.y}) rotate(${stick.start.r} ${stickWidth/2} 0) scale(${stick.start.s})`}
       style={{
-        transform: `translate3d(${stick.start.x}px, ${stick.start.y}px, 0) rotate(${stick.start.r}deg) scale(${stick.start.s})`,
-        transformOrigin: `${stickWidth/2}px 0px`,
-        willChange: isAnimating ? 'transform' : 'auto',
-        transformBox: 'fill-box',
-        backfaceVisibility: 'hidden',
-        WebkitBackfaceVisibility: 'hidden'
+        willChange: isAnimating ? 'transform' : 'auto'
       }}
     >
       <defs>
