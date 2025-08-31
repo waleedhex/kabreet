@@ -33,9 +33,55 @@ const MatchstickCanvas = ({
   }, [isAnimating, effectiveDuration, onAnimationComplete]);
 
   const getViewBox = () => {
-    // استخدام لوحة تصميم ثابتة لضمان التطابق مع برنامج التصميم
-    // هذا يمنع تغير الإطار بسبب أعواد خارج اللوحة (قيم سالبة أو أهداف بعيدة)
-    return "0 0 960 540";
+    // حساب الحدود الفعلية للألغاز للتوسيط التلقائي
+    if (!puzzle.sticks.length) return "0 0 960 540";
+    
+    let minX = Infinity, maxX = -Infinity;
+    let minY = Infinity, maxY = -Infinity;
+    
+    puzzle.sticks.forEach(stick => {
+      // فحص موضع البداية والهدف
+      [stick.start, stick.target].forEach(pos => {
+        const stickWidth = 200 * pos.s;
+        const x1 = pos.x - 16; // رأس العود
+        const x2 = pos.x + stickWidth;
+        const y1 = pos.y - 9;
+        const y2 = pos.y + 9;
+        
+        minX = Math.min(minX, x1, x2);
+        maxX = Math.max(maxX, x1, x2);
+        minY = Math.min(minY, y1, y2);
+        maxY = Math.max(maxY, y1, y2);
+      });
+    });
+    
+    // إضافة padding
+    const padding = 50;
+    minX -= padding;
+    maxX += padding;
+    minY -= padding;
+    maxY += padding;
+    
+    const width = maxX - minX;
+    const height = maxY - minY;
+    
+    // الحفاظ على نسبة 16:9 مع التوسيط
+    const targetRatio = 16 / 9;
+    const currentRatio = width / height;
+    
+    if (currentRatio > targetRatio) {
+      // العرض أكبر، نوسع الارتفاع
+      const newHeight = width / targetRatio;
+      const extraHeight = newHeight - height;
+      minY -= extraHeight / 2;
+      return `${minX} ${minY} ${width} ${newHeight}`;
+    } else {
+      // الارتفاع أكبر، نوسع العرض
+      const newWidth = height * targetRatio;
+      const extraWidth = newWidth - width;
+      minX -= extraWidth / 2;
+      return `${minX} ${minY} ${newWidth} ${height}`;
+    }
   };
 
   return (

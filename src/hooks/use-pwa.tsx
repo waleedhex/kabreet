@@ -50,7 +50,7 @@ export const usePWA = () => {
   return {
     isPWA,
     isInstallable,
-    shouldShowInstallPrompt: !isPWA // يظهر دائماً في المتصفح ويختفي فقط في PWA
+    shouldShowInstallPrompt: isInstallable && !isPWA
   };
 };
 
