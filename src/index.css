@@ -40,9 +40,13 @@ All colors MUST be HSL.
 
     --radius: 0.75rem;
 
-    /* Game-specific colors */
-    --matchstick-wood: 30 65% 45%;
-    --matchstick-tip: 15 85% 55%;
+    /* Game-specific colors - محسنة لتطابق البرنامج الأصلي */
+    --matchstick-wood: 24 42% 50%;      /* #a06b48 محسن */
+    --matchstick-wood-dark: 24 42% 38%; /* #8B4513 للحدود */
+    --matchstick-wood-light: 30 50% 65%; /* للتدرج */
+    --matchstick-tip: 0 77% 41%;        /* #b11b1b */
+    --matchstick-tip-dark: 0 77% 30%;   /* للظلال */
+    --matchstick-tip-shine: 0 0% 100%;  /* البريق */
     --game-surface: 25 15% 10%;
     --success: 120 60% 50%;
     --warning: 45 100% 60%;
@@ -50,12 +54,16 @@ All colors MUST be HSL.
     /* Gradients */
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
     --gradient-surface: linear-gradient(145deg, hsl(var(--card)), hsl(var(--game-surface)));
-    --gradient-matchstick: linear-gradient(90deg, hsl(var(--matchstick-wood)), hsl(var(--matchstick-tip)));
+    --gradient-wood: linear-gradient(90deg, hsl(var(--matchstick-wood-light)), hsl(var(--matchstick-wood)), hsl(var(--matchstick-wood-dark)));
+    --gradient-tip: radial-gradient(ellipse at center, hsl(var(--matchstick-tip)), hsl(var(--matchstick-tip-dark)));
+    --gradient-tip-shine: linear-gradient(45deg, hsl(var(--matchstick-tip-shine)) 0%, transparent 70%);
 
     /* Shadows and Effects */
     --shadow-game: 0 25px 50px -12px hsl(var(--primary) / 0.25);
     --shadow-card: 0 10px 30px -5px hsl(25 50% 5% / 0.8);
     --glow-matchstick: 0 0 20px hsl(var(--matchstick-tip) / 0.5);
+    --shadow-matchstick: 0 2px 8px hsl(0 0% 0% / 0.3);
+    --shadow-matchstick-head: 0 1px 4px hsl(var(--matchstick-tip-dark) / 0.6);
 
     /* Animations */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);

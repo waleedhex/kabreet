@@ -83,15 +83,33 @@ const Matchstick = ({
       }}
     >
       <defs>
-        <linearGradient id={`matchstick-gradient-${index}`} x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="hsl(var(--matchstick-tip))" />
-          <stop offset="14%" stopColor="hsl(var(--matchstick-tip))" />
-          <stop offset="20%" stopColor="hsl(var(--matchstick-wood))" />
-          <stop offset="100%" stopColor="hsl(var(--matchstick-wood))" />
+        {/* تدرج الخشب ثلاثي الأبعاد */}
+        <linearGradient id={`wood-gradient-${index}`} x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="hsl(var(--matchstick-wood-light))" />
+          <stop offset="50%" stopColor="hsl(var(--matchstick-wood))" />
+          <stop offset="100%" stopColor="hsl(var(--matchstick-wood-dark))" />
         </linearGradient>
+        
+        {/* تدرج رأس العود */}
+        <radialGradient id={`tip-gradient-${index}`} cx="30%" cy="30%" r="70%">
+          <stop offset="0%" stopColor="hsl(var(--matchstick-tip))" />
+          <stop offset="100%" stopColor="hsl(var(--matchstick-tip-dark))" />
+        </radialGradient>
+        
+        {/* بريق رأس العود */}
+        <linearGradient id={`shine-gradient-${index}`} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="hsl(var(--matchstick-tip-shine))" stopOpacity="0.4" />
+          <stop offset="70%" stopColor="hsl(var(--matchstick-tip-shine))" stopOpacity="0.1" />
+          <stop offset="100%" stopColor="hsl(var(--matchstick-tip-shine))" stopOpacity="0" />
+        </linearGradient>
+        
+        {/* فلتر الظل */}
+        <filter id={`shadow-${index}`} x="-50%" y="-50%" width="200%" height="200%">
+          <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="hsl(0 0% 0%)" floodOpacity="0.3"/>
+        </filter>
       </defs>
       
-      {/* جسم العود الخشبي */}
+      {/* جسم العود الخشبي محسن */}
       <rect
         className="wood"
         x="0"
@@ -99,12 +117,36 @@ const Matchstick = ({
         width={stickWidth}
         height={stickHeight}
         rx="6"
-        fill="hsl(var(--matchstick-wood))"
-        stroke="hsl(var(--matchstick-wood))"
+        fill={`url(#wood-gradient-${index})`}
+        stroke="hsl(var(--matchstick-wood-dark))"
         strokeWidth="1"
+        filter={`url(#shadow-${index})`}
+        style={{
+          filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.2))'
+        }}
       />
       
-      {/* رأس العود الأحمر (في البداية) */}
+      {/* نسيج الخشب */}
+      <rect
+        x="20"
+        y={-stickHeight / 2 + 2}
+        width={stickWidth - 40}
+        height="2"
+        fill="hsl(var(--matchstick-wood-dark))"
+        opacity="0.3"
+        rx="1"
+      />
+      <rect
+        x="30"
+        y={stickHeight / 2 - 4}
+        width={stickWidth - 60}
+        height="2"
+        fill="hsl(var(--matchstick-wood-dark))"
+        opacity="0.2"
+        rx="1"
+      />
+      
+      {/* رأس العود الأحمر محسن */}
       <rect
         className="headFill"
         x="-16"
@@ -112,18 +154,30 @@ const Matchstick = ({
         width={headWidth}
         height={headHeight}
         rx="9"
-        fill="hsl(var(--matchstick-tip))"
+        fill={`url(#tip-gradient-${index})`}
+        stroke="hsl(var(--matchstick-tip-dark))"
+        strokeWidth="0.5"
+        style={{
+          filter: 'drop-shadow(0 1px 3px rgba(177, 27, 27, 0.4))'
+        }}
       />
       
-      {/* بريق على الرأس */}
-      <rect
-        className="headShine"
-        x="-10"
-        y={-headHeight / 2}
-        width="8"
-        height={headHeight}
-        fill="#ffffff"
-        opacity="0.25"
+      {/* بريق متطور على الرأس */}
+      <ellipse
+        cx="-8"
+        cy={-headHeight / 4}
+        rx="6"
+        ry="4"
+        fill={`url(#shine-gradient-${index})`}
+      />
+      
+      {/* بريق صغير إضافي */}
+      <circle
+        cx="-6"
+        cy={-headHeight / 3}
+        r="2"
+        fill="hsl(var(--matchstick-tip-shine))"
+        opacity="0.6"
       />
       
       {/* نص رقم الخطوة (إذا كان موجود) */}
