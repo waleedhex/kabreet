@@ -11,13 +11,16 @@ import {
   Clock,
   SkipForward,
   Trophy,
-  UserCheck
+  UserCheck,
+  Smartphone
 } from 'lucide-react';
 import MatchstickCanvas from './MatchstickCanvas';
 import ScoreBoard from './ScoreBoard';
 import PlayerSelection from './PlayerSelection';
 import { GameState, GamePuzzle } from '@/types/game';
 import { PuzzleService } from '@/services/puzzleService';
+import PWAInstallPrompt from './PWAInstallPrompt';
+import { usePWA } from '@/hooks/use-pwa';
 
 interface GamePlayProps {
   gameState: GameState;
@@ -201,6 +204,8 @@ const GamePlay = ({ gameState, onUpdateGameState, onBackToMenu }: GamePlayProps)
   const [availablePuzzles] = useState<GamePuzzle[]>(samplePuzzles);
   const [showScoreBoard, setShowScoreBoard] = useState(false);
   const [showPlayerSelection, setShowPlayerSelection] = useState(false);
+  const { shouldShowInstallPrompt } = usePWA();
+  const [showPWAPrompt, setShowPWAPrompt] = useState(false);
 
   // Initialize with first puzzle if not set
   useEffect(() => {
@@ -517,8 +522,22 @@ const GamePlay = ({ gameState, onUpdateGameState, onBackToMenu }: GamePlayProps)
                       <span>التالي</span>
                     </Button>
                   </div>
-                  
-                  
+
+      {/* زر حفظ كتطبيق - يظهر دائماً في المتصفح ويختفي في وضع PWA */}
+      {shouldShowInstallPrompt && (
+        <>
+          <div className="fixed bottom-3 right-3 z-50">
+            <Button onClick={() => setShowPWAPrompt(true)} size="sm" className="shadow-lg">
+              <Smartphone className="h-4 w-4 ml-2" />
+              حفظ كتطبيق
+            </Button>
+          </div>
+          {showPWAPrompt && (
+            <PWAInstallPrompt onClose={() => setShowPWAPrompt(false)} />
+          )}
+        </>
+      )}
+
                   {/* الصف الثاني - أزرار اللاعبين والتنقل - دائماً مرئية */}
                   <div className="grid grid-cols-3 gap-2">
                     <Button
