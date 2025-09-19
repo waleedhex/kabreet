@@ -1,98 +1,93 @@
-@import url('./mobile-fixes.css');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* ألغاز الكبريت - نظام التصميم */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap');
 
 @layer base {
   :root {
-    /* Matchstick Game Color System */
-    --background: 25 20% 8%;
-    --foreground: 45 95% 85%;
-
-    --card: 25 15% 12%;
-    --card-foreground: 45 95% 85%;
-
-    --popover: 25 15% 12%;
-    --popover-foreground: 45 95% 85%;
-
-    --primary: 45 100% 65%;
-    --primary-foreground: 25 20% 8%;
-
-    --secondary: 25 30% 20%;
-    --secondary-foreground: 45 95% 85%;
-
-    --muted: 25 25% 15%;
-    --muted-foreground: 45 20% 55%;
-
-    --accent: 15 85% 55%;
-    --accent-foreground: 45 95% 85%;
-
-    --destructive: 0 85% 60%;
-    --destructive-foreground: 45 95% 85%;
-
-    --border: 25 30% 25%;
-    --input: 25 30% 18%;
-    --ring: 45 100% 65%;
-
+    /* الألوان الأساسية */
+    --background: 223 47% 8%;
+    --foreground: 45 100% 96%;
+    
+    --game-bg: 220 50% 6%;
+    --game-board: 217 33% 12%;
+    --game-panel: 215 25% 15%;
+    
+    --card: 217 33% 12%;
+    --card-foreground: 45 100% 96%;
+    
+    --primary: 45 93% 47%;
+    --primary-foreground: 223 47% 8%;
+    
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 45 100% 96%;
+    
+    --accent: 35 100% 55%;
+    --accent-foreground: 223 47% 8%;
+    
+    --success: 142 76% 36%;
+    --success-foreground: 142 76% 96%;
+    
+    --warning: 38 92% 50%;
+    --warning-foreground: 38 92% 8%;
+    
+    --error: 0 84% 60%;
+    --error-foreground: 0 84% 98%;
+    
+    --muted: 217 20% 25%;
+    --muted-foreground: 217 20% 65%;
+    
+    --border: 217 20% 25%;
+    --input: 217 20% 20%;
+    --ring: 45 93% 47%;
+     
     --radius: 0.75rem;
-
-    /* Game-specific colors - محسنة لتطابق البرنامج الأصلي */
-    --matchstick-wood: 24 42% 50%;      /* #a06b48 محسن */
-    --matchstick-wood-dark: 24 42% 38%; /* #8B4513 للحدود */
-    --matchstick-wood-light: 30 50% 65%; /* للتدرج */
-    --matchstick-tip: 0 77% 41%;        /* #b11b1b */
-    --matchstick-tip-dark: 0 77% 30%;   /* للظلال */
-    --matchstick-tip-shine: 0 0% 100%;  /* البريق */
-    --game-surface: 25 15% 10%;
-    --success: 120 60% 50%;
-    --warning: 45 100% 60%;
-
-    /* Gradients */
+    
+    /* Game specific colors with proper HSL format */
+    --wood: 30 45% 52%;
+    --wood-border: 30 50% 35%;
+    --match-head: 0 70% 45%;
+    --game-bg: 222 15% 6%;
+    --game-panel: 220 13% 10%;
+    --game-board: 220 13% 14%;
+    
+    /* Additional game colors */
+    --warning: 38 92% 50%;
+    --warning-foreground: 48 96% 89%;
+    
+    /* الكبريت */
+    --matchstick-wood: 25 75% 45%;
+    --matchstick-head: 0 85% 55%;
+    --matchstick-shine: 0 0% 100%;
+    --matchstick-shadow: 223 47% 8%;
+    
+    /* التدرجات والتأثيرات */
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
-    --gradient-surface: linear-gradient(145deg, hsl(var(--card)), hsl(var(--game-surface)));
-    --gradient-wood: linear-gradient(90deg, hsl(var(--matchstick-wood-light)), hsl(var(--matchstick-wood)), hsl(var(--matchstick-wood-dark)));
-    --gradient-tip: radial-gradient(ellipse at center, hsl(var(--matchstick-tip)), hsl(var(--matchstick-tip-dark)));
-    --gradient-tip-shine: linear-gradient(45deg, hsl(var(--matchstick-tip-shine)) 0%, transparent 70%);
-
-    /* Shadows and Effects */
-    --shadow-game: 0 25px 50px -12px hsl(var(--primary) / 0.25);
-    --shadow-card: 0 10px 30px -5px hsl(25 50% 5% / 0.8);
-    --glow-matchstick: 0 0 20px hsl(var(--matchstick-tip) / 0.5);
-    --shadow-matchstick: 0 2px 8px hsl(0 0% 0% / 0.3);
-    --shadow-matchstick-head: 0 1px 4px hsl(var(--matchstick-tip-dark) / 0.6);
-
-    /* Animations */
+    --gradient-board: linear-gradient(135deg, hsl(var(--game-board)), hsl(var(--game-panel)));
+    --glow-primary: 0 0 20px hsl(var(--primary) / 0.3);
+    --glow-success: 0 0 20px hsl(var(--success) / 0.4);
+    --glow-error: 0 0 20px hsl(var(--error) / 0.4);
+    
+    /* الحركة */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   }
+}
 
-  .dark {
-    /* Enhanced dark mode for matchstick game */
-    --background: 25 25% 6%;
-    --foreground: 45 95% 90%;
-    --card: 25 20% 10%;
-    --game-surface: 25 20% 8%;
-    --shadow-card: 0 15px 40px -8px hsl(25 50% 3% / 0.9);
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground font-['Cairo',sans-serif];
+    direction: rtl;
+  }
+  
+  html {
+    direction: rtl;
   }
 }
 
@@ -103,94 +98,5 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Cairo', 'Segoe UI', system-ui, sans-serif;
-    direction: rtl;
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Amiri', 'Cairo', serif;
-    font-weight: 700;
-  }
-
-  .logo-gradient {
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .game-card {
-    @apply bg-card border-border/30 shadow-[var(--shadow-card)];
-  }
-
-  .game-card:hover {
-    @apply shadow-[var(--shadow-game)] transform scale-[1.02];
-    transition: var(--transition-smooth);
-  }
-
-  .matchstick-glow {
-    filter: drop-shadow(var(--glow-matchstick));
-  }
-
-  /* Smooth animations for matchsticks */
-  .animate-matchstick-move {
-    animation: none; /* Remove animation, rely on CSS transition */
-  }
-
-  /* Better mobile animation support */
-  svg g {
-    transform-box: fill-box;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-  }
-
-  @keyframes smooth-move {
-    0% {
-      transform-origin: center;
-    }
-    50% {
-      transform: scale(1.02);
-    }
-    100% {
-      transform-origin: center;
-    }
-  }
-
-  /* Enhanced easing curves for better mobile experience */
-  .transition-smooth-mobile {
-    transition: all 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
-  }
-
-  .transition-gentle {
-    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-}
-
-@layer components {
-  .btn-game-primary {
-    @apply bg-primary text-primary-foreground hover:bg-primary/90;
-    @apply shadow-[0_4px_15px_hsl(var(--primary)/0.3)];
-    @apply transition-all duration-300 ease-out;
-    @apply hover:shadow-[0_6px_20px_hsl(var(--primary)/0.4)] hover:scale-[1.02];
-  }
-
-  .btn-game-secondary {
-    @apply bg-secondary text-secondary-foreground hover:bg-secondary/80;
-    @apply border border-border/50;
-    @apply transition-all duration-300 ease-out;
-    @apply hover:border-primary/30 hover:shadow-[0_4px_12px_hsl(var(--primary)/0.2)];
-  }
-
-  .card-game {
-    @apply bg-card/80 backdrop-blur-sm border border-border/30;
-    @apply shadow-[var(--shadow-card)] rounded-[var(--radius)];
-    @apply transition-all duration-300 ease-out;
-  }
-
-  .card-game:hover {
-    @apply shadow-[var(--shadow-game)] border-primary/20;
-    transform: translateY(-2px);
   }
 }

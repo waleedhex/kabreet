@@ -1,84 +1,63 @@
-import { useState } from 'react';
-import Login from '@/components/Login';
-import GameSetup from '@/components/GameSetup';
-import GamePlay from '@/components/GamePlay';
-import { GameState, GameSettings, GamePuzzle } from '@/types/game';
+import React, { useState, useEffect } from 'react';
+import GameSetup from '@/components/game/GameSetup';
+import MultiPlayerGame from '@/components/game/MultiPlayerGame';
+import LoginScreen from '@/components/auth/LoginScreen';
+
+interface Player {
+  id: string;
+  name: string;
+  score: number;
+  solvedPuzzles: number;
+}
 
 const Index = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
-  const [gameState, setGameState] = useState<GameState>({
-    currentPuzzle: null,
-    puzzleIndex: 0,
-    showSolution: false,
-    showStep: 0,
-    timeRemaining: 0,
-    isPlaying: false,
-    isPaused: false,
-    settings: {
-      timeLimit: 0,
-      players: []
-    },
-    stepsUsed: 0,
-    currentPlayerIndex: 0,
-    usedPuzzles: []
-  });
+  const [players, setPlayers] = useState<Player[]>([]);
+  const [timeLimit, setTimeLimit] = useState(3);
 
-  const handleStartGame = (settings: GameSettings, puzzle: GamePuzzle) => {
-    setGameState(prev => ({
-      ...prev,
-      currentPuzzle: puzzle,
-      settings,
-      timeRemaining: settings.timeLimit,
-      isPlaying: true,
-      isPaused: false
+  // تنظيف أي حفظ سابق لحالة الدخول
+  useEffect(() => {
+    localStorage.removeItem('matchstick_auth');
+    localStorage.removeItem('matchstick_auth_time');
+  }, []);
+
+  const handleLoginSuccess = () => {
+    setIsAuthenticated(true);
+  };
+
+  const handleStartGame = (setupPlayers: Array<{id: string; name: string}>, time: number) => {
+    const gamePlayers: Player[] = setupPlayers.map(p => ({
+      ...p,
+      score: 0,
+      solvedPuzzles: 0
     }));
+    
+    setPlayers(gamePlayers);
+    setTimeLimit(time);
     setGameStarted(true);
   };
 
-  const handleUpdateGameState = (updates: Partial<GameState>) => {
-    setGameState(prev => ({ ...prev, ...updates }));
-  };
-
-  const handleLogin = () => {
-    setIsLoggedIn(true);
-  };
-
-  const handleBackToMenu = () => {
+  const handleBackToSetup = () => {
     setGameStarted(false);
-    setGameState({
-      currentPuzzle: null,
-      puzzleIndex: 0,
-      showSolution: false,
-      showStep: 0,
-      timeRemaining: 0,
-      isPlaying: false,
-      isPaused: false,
-      settings: {
-        timeLimit: 0,
-        players: []
-      },
-      stepsUsed: 0,
-      currentPlayerIndex: 0,
-      usedPuzzles: []
-    });
+    setPlayers([]);
+    setTimeLimit(3);
   };
 
-  console.log('isLoggedIn:', isLoggedIn); // للتتبع
-  
-  if (!isLoggedIn) {
-    return <Login onLogin={handleLogin} />;
+  // عرض شاشة تسجيل الدخول إذا لم يتم التحقق من الهوية
+  if (!isAuthenticated) {
+    return <LoginScreen onLoginSuccess={handleLoginSuccess} />;
   }
-
+  // عرض شاشة الإعدادات أو اللعبة
   if (!gameStarted) {
     return <GameSetup onStartGame={handleStartGame} />;
   }
 
   return (
-    <GamePlay
-      gameState={gameState}
-      onUpdateGameState={handleUpdateGameState}
-      onBackToMenu={handleBackToMenu}
+    <MultiPlayerGame 
+      players={players}
+      timeLimit={timeLimit}
+      onBackToSetup={handleBackToSetup}
     />
   );
 };

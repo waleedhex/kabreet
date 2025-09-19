@@ -2,31 +2,33 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>لعبة ألغاز الكباريت - Matchstick Maestro</title>
-    <meta name="description" content="اختبر ذكاءك وحل الألغاز بتحريك أعواد الكباريت" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
     <!-- PWA Meta Tags -->
-    <meta name="theme-color" content="#0f0f23" />
-    <link rel="manifest" href="/manifest.json" />
+    <meta name="description" content="لعبة ألغاز أعواد الثقاب التفاعلية - تحدى عقلك وحل الألغاز الشيقة">
+    <meta name="theme-color" content="#0a0a0a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="أعواد الثقاب">
+    <meta name="msapplication-TileColor" content="#0a0a0a">
     
-    <!-- Apple PWA Meta Tags -->
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="apple-mobile-web-app-title" content="ألغاز الكباريت" />
-    <link rel="apple-touch-icon" href="/pwa-icon-512.png" />
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/manifest.json">
     
-    <!-- Microsoft PWA Meta Tags -->
-    <meta name="msapplication-TileImage" content="/pwa-icon-512.png" />
-    <meta name="msapplication-TileColor" content="#0f0f23" />
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="72x72" href="/icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="96x96" href="/icon-96x96.png">
+    <link rel="apple-touch-icon" sizes="128x128" href="/icon-128x128.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="/icon-192x192.png">
+    <link rel="apple-touch-icon" sizes="384x384" href="/icon-384x384.png">
+    <link rel="apple-touch-icon" sizes="512x512" href="/icon-512x512.png">
     
-    <meta name="author" content="Matchstick Game Developer" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>لعبة أعواد الثقاب السحرية</title>
 
-    <meta property="og:title" content="لعبة ألغاز الكباريت - Matchstick Maestro" />
-    <meta property="og:description" content="لعبة تفاعلية لحل ألغاز الكباريت - اختبر ذكاءك وحل التحديات الممتعة" />
+    <meta property="og:title" content="matchstick-magic-maker" />
+    <meta property="og:description" content="Lovable Generated Project" />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
 
@@ -39,16 +41,16 @@
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     
-    <!-- PWA Service Worker Registration -->
+    <!-- PWA Service Worker -->
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('/sw.js')
             .then((registration) => {
-              console.log('Service Worker registered successfully:', registration.scope);
+              console.log('SW registered: ', registration);
             })
-            .catch((error) => {
-              console.log('Service Worker registration failed:', error);
+            .catch((registrationError) => {
+              console.log('SW registration failed: ', registrationError);
             });
         });
       }
