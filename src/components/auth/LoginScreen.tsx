@@ -76,7 +76,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
         
         toast({
           title: "تم التحقق بنجاح!",
-          description: "مرحباً بك في لعبة أعواد الثقاب"
+          description: "مرحباً بك في لعبة كبريت"
         });
         
         onLoginSuccess();

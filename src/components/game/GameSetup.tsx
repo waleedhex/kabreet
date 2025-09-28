@@ -75,7 +75,7 @@ const GameSetup: React.FC<GameSetupProps> = ({ onStartGame }) => {
         <CardHeader className="text-center">
           <CardTitle className="text-3xl font-bold text-primary flex items-center justify-center gap-3">
             <Users className="w-8 h-8" />
-            إعدادات لعبة ألغاز الكباريت
+            إعدادات لعبة الكبريت
           </CardTitle>
           <p className="text-muted-foreground mt-2">
             أضف أسماء اللاعبين واختر مدة الجولة
